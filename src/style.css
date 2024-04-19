@@ -1,0 +1,31 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+
+.btn {
+	@apply items-center bg-secondary border-0 py-1 px-3 focus:outline-none hover:bg-secondaryHover rounded-lg text-base mt-0;
+}
+.center {
+	@apply absolute top-0 left-10;
+}
+.animate {
+	@apply transition-all duration-200 ease-in-out;
+}
+
+.noice {
+	@apply pb-2;
+	background: linear-gradient(currentColor 0 0) left var(--p, 50%) bottom 0 /
+			var(--d, 10%) 3px no-repeat,
+		linear-gradient(currentColor 0 0) right var(--p, 50%) bottom 0 /
+			var(--d, 10%) 3px no-repeat;
+	transition: 0.3s, background-position 0.3s 0.3s;
+}
+
+.noice:hover {
+	--d: 50%;
+	--p: 50.1%;
+	transition: cubic-bezier(0, 500, 1, 500) 0.3s, background-size 0.3s 0.3s;
+}
+
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:ital,wght@0,300;0,400;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;1,6..12,300;1,6..12,400&display=swap');
