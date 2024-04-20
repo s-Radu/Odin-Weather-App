@@ -1,7 +1,7 @@
+import toggleDarkMode from './darkMode';
+import nav from './nav';
 import './style.css';
 import { getElement } from './utilis';
-import nav from './nav';
-import toggleDarkMode from './darkMode';
 
 const parentElement = document.body;
 
@@ -11,3 +11,4 @@ let darkModeToggle = getElement('#toggle');
 darkModeToggle.addEventListener('click', toggleDarkMode);
 
 let x;
+addEventListener;

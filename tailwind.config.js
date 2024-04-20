@@ -2,26 +2,7 @@
 
 module.exports = {
 	mode: 'jit',
-	content: [
-		'./dist/*.html',
-		'./src/*.js',
-		{
-			safelist: [
-				'w-64',
-				'w-1/2',
-				'rounded-l-lg',
-				'rounded-r-lg',
-				'bg-gray-200',
-				'grid-cols-4',
-				'grid-cols-7',
-				'h-6',
-				'leading-6',
-				'h-9',
-				'leading-9',
-				'shadow-lg',
-			],
-		},
-	],
+	content: ['./dist/**/*.html', './src/**/*.js'],
 	darkMode: 'class',
 
 	theme: {
@@ -91,7 +72,6 @@ module.exports = {
 			},
 		},
 	},
-	content: ['./dist/**/*.html', './src/**/*.js'],
 	plugins: [
 		//! Plugin to add text-shadow class with the existing colors
 		function ({ addUtilities, theme, variants }) {
