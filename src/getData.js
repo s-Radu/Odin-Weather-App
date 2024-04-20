@@ -1,8 +1,14 @@
 async function getWeatherData() {
 	// !Stop forgeting to use FETCH in order to fetch the data from the API!!!!!!!
 
+	let city = prompt('city?', '');
+	if (city === '') {
+		city = 'Timisoara';
+	}
+	console.log(city);
+
 	const response = await fetch(
-		`http://api.weatherapi.com/v1/forecast.json?key=025edeae7fbf45ad949194206241504&q=timisoara&days=4&aqi=no&alerts=yes`,
+		`http://api.weatherapi.com/v1/forecast.json?key=025edeae7fbf45ad949194206241504&q=${city}&days=4&aqi=no&alerts=yes`,
 		{ mode: 'cors' },
 	);
 	const data = await response.json();
@@ -83,7 +89,7 @@ function extractData(data) {
 	Min Temp: ${day1MinTempC}
 	Max Temp: ${day1MaxTempC}
 	Condition: ${day1Condition}
-	Average humidity: ${day1Humidity}$
+	Average humidity: ${day1Humidity}%
 	UV: ${day1UV}
 	Rain chances are: ${day1RainChances}%
 	Visibility: ${day1Visibility} km
@@ -97,7 +103,7 @@ function extractData(data) {
 	Min Temp: ${day2MinTempC}
 	Max Temp: ${day2MaxTempC}
 	Condition: ${day2Condition}
-	Average humidity: ${day2Humidity}$
+	Average humidity: ${day2Humidity}%
 	UV: ${day2UV}
 	Rain chances are: ${day2RainChances}%
 	Visibility: ${day2Visibility} km
@@ -111,7 +117,7 @@ function extractData(data) {
 	Min Temp: ${day3MinTempC}
 	Max Temp: ${day3MaxTempC}
 	Condition: ${day3Condition}
-	Average humidity: ${day3Humidity}$
+	Average humidity: ${day3Humidity}%
 	UV: ${day3UV}
 	Rain chances are: ${day3RainChances}%
 	Visibility: ${day3Visibility} km
