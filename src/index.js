@@ -1,5 +1,5 @@
 import toggleDarkMode from './darkMode';
-import showWeatherData from './getData';
+import processWeatherData from './getData';
 import nav from './nav';
 import './style.css';
 import { getElement } from './utilis';
@@ -16,7 +16,7 @@ location.addEventListener('keydown', getLocation);
 
 function getLocation(e) {
 	if (e.key === 'Enter') {
-		showWeatherData(location.value);
+		processWeatherData(location.value);
 		location.value = '';
 	}
 }
