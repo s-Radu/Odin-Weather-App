@@ -1,4 +1,5 @@
 import toggleDarkMode from './darkMode';
+import showWeatherData from './getData';
 import nav from './nav';
 import './style.css';
 import { getElement } from './utilis';
@@ -10,5 +11,4 @@ parentElement.appendChild(nav());
 let darkModeToggle = getElement('#toggle');
 darkModeToggle.addEventListener('click', toggleDarkMode);
 
-let x;
-addEventListener;
+showWeatherData();
