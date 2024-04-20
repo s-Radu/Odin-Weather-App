@@ -51,76 +51,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ nav)
 /* harmony export */ });
 /* harmony import */ var _utilis_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilis.js */ "./src/utilis.js");
+/* harmony import */ var _imgs_logo_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./imgs/logo.png */ "./src/imgs/logo.png");
+
 
 function nav() {
   const header = (0,_utilis_js__WEBPACK_IMPORTED_MODULE_0__.createElement)({
     type: 'header',
     classes: 'text-primary container mx-auto min-h-10',
     content: `
-        <div class="container mx-auto flex flex-wrap p-5 items-center justify-between md:justify-normal">
-            <div class="relative flex w-20 h-10">
-                <a href="#">
-                    <img src="" alt="Icon" class="w-20 absolute">
-                </a>
-            </div>
-                <nav class="md:ml-auto hidden  md:flex flex-wrap items-center text-base justify-center">
-                    <a href="#hme" class="mr-5 cursor-pointer noice hover:noice">Link 1</a>
-                    <a href="#" class="mr-5 cursor-pointer noice hover:noice">Link 2</a>
-                    <a href="#" class="mr-5 cursor-pointer noice hover:noice">Link 3</a>
-                    <a href="#" class="mr-5 cursor-pointer noice hover:noice">Link 4</a>
-                </nav>
-                <div class="relative  flex flex-col md:hidden min-h-20 w-20 cursor-pointer items-center justify-center rounded-3xl p-2"
-                    id="hamburgher">
-                    <div class="space-y-2">
-                        <span id="line1"
-                            class="block h-1 w-10 origin-center rounded-full bg-secondary transition-transform ease-in-out duration-200 "></span>
-                        <span id="line2"
-                            class="block h-1 w-8 origin-center rounded-full bg-primary transition-transform ease-in-out"></span>
-                    </div>
-                    <nav id="menu"
-                        class="absolute top-20 hidden z-10 flex-col w-40 items-center transition-all ease-in-out animate-fadeIn duration-200">
-                        <a href="#" class="mt-5 text-center cursor-pointer noice hover:noice ">Link 1</a>
-                        <a href="#" class="mt-5 text-center cursor-pointer noice hover:noice ">Link 2</a>
-                        <a href="#" class="mt-5 text-center cursor-pointer noice hover:noice ">Link 3</a>
-                        <a href="#" class="mt-5 text-center cursor-pointer noice hover:noice ">Link 4</a>
-                    </nav>
-                </div>
-                <a href="" targer='_blank' class="btn hidden md:inline-flex text-primary">
-                    Button
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        class="w-4 h-4 ml-1 mb-1" viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7"></path>
-                    </svg>
-                </a>
-                <div id="toggle"
-                    class="w-12 h-6 flex items-center group relative bg-gray-800 dark:bg-gray-300 rounded-full p-1 cursor-pointer transform duration-200 ease-in-expo hover:scale-105">
-                    <div id="circle"
-                        class="w-5 h-5 bg-gray-300 dark:bg-gray-800 rounded-full shadow-md shadow-black duration-500 translate-x-5  ease-in-expo">
-                    </div>
-                    <span
-                        class="absolute text-xs bg-gray-700 text-gray-100 dark:bg-gray-100 dark:text-gray-700 p-1 min-w-20 text-center rounded-lg opacity-0  group-hover:opacity-100 -bottom-16 -left-1/3 transition-all duration-200 ease-in-expo"
-                        x-show="showTooltip">
-                        Toggle dark mode
-                    </span>
-                </div>
-        </div>
+
         `
   });
-  const hamburgherMenu = header.querySelector('#hamburgher');
-  hamburgherMenu.addEventListener('click', toggleMenu);
-  function toggleMenu() {
-    const line1 = document.getElementById('line1');
-    const line2 = document.getElementById('line2');
-    line1.classList.toggle('translate-y-1.5');
-    line1.classList.toggle('rotate-45');
-    line2.classList.toggle('w-10');
-    line2.classList.toggle('w-8');
-    line2.classList.toggle('-translate-y-1.5');
-    line2.classList.toggle('-rotate-45');
-    const menu = document.getElementById('menu');
-    menu.classList.toggle('hidden');
-    menu.classList.toggle('flex');
-  }
   return header;
 }
 
@@ -858,10 +799,6 @@ video {
   margin-right: 1.25rem;
 }
 
-.mt-10 {
-  margin-top: 2.5rem;
-}
-
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -942,45 +879,9 @@ video {
   transform-origin: center;
 }
 
-.-translate-y-1 {
-  --tw-translate-y: -0.25rem;
-  transform: translate(var(--tw-translate-x), -0.25rem) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-y-1\\.5 {
-  --tw-translate-y: -0.375rem;
-  transform: translate(var(--tw-translate-x), -0.375rem) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .translate-x-5 {
   --tw-translate-x: 1.25rem;
   transform: translate(1.25rem, var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-1 {
-  --tw-translate-y: 0.25rem;
-  transform: translate(var(--tw-translate-x), 0.25rem) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.translate-y-1\\.5 {
-  --tw-translate-y: 0.375rem;
-  transform: translate(var(--tw-translate-x), 0.375rem) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-rotate-45 {
-  --tw-rotate: -45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(-45deg) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-45 {
-  --tw-rotate: 45deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(45deg) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1110,11 +1011,6 @@ video {
   text-align: center;
 }
 
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-}
-
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -1123,10 +1019,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.font-bold {
-  font-weight: 700;
 }
 
 .text-gray-100 {
@@ -1139,10 +1031,6 @@ video {
   --tw-text-opacity: 1;
   color: rgba(235, 190, 125, 1);
   color: rgba(235, 190, 125, var(--tw-text-opacity));
-}
-
-.underline {
-  text-decoration-line: underline;
 }
 
 .opacity-0 {
@@ -1252,12 +1140,6 @@ video {
   color: rgba(55, 65, 81, var(--tw-text-opacity));
 }
 
-.dark .dark\\:text-white {
-  --tw-text-opacity: 1;
-  color: rgba(255, 255, 255, 1);
-  color: rgba(255, 255, 255, var(--tw-text-opacity));
-}
-
 @media (min-width: 768px) {
 
   .md\\:ml-auto {
@@ -1280,7 +1162,7 @@ video {
     justify-content: normal;
   }
 }
-`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"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","sourcesContent":["@import 'tailwindcss/base';\n@import 'tailwindcss/components';\n\n.btn {\n\t@apply items-center bg-secondary border-0 py-1 px-3 focus:outline-none hover:bg-secondaryHover rounded-lg text-base mt-0;\n}\n.center {\n\t@apply absolute top-0 left-10;\n}\n.animate {\n\t@apply transition-all duration-200 ease-in-out;\n}\n\n.noice {\n\t@apply pb-2;\n\tbackground: linear-gradient(currentColor 0 0) left var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat,\n\t\tlinear-gradient(currentColor 0 0) right var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat;\n\ttransition: 0.3s, background-position 0.3s 0.3s;\n}\n\n.noice:hover {\n\t--d: 50%;\n\t--p: 50.1%;\n\ttransition: cubic-bezier(0, 500, 1, 500) 0.3s, background-size 0.3s 0.3s;\n}\n\n@import 'tailwindcss/utilities';\n\n@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:ital,wght@0,300;0,400;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;1,6..12,300;1,6..12,400&display=swap');\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"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","sourcesContent":["@import 'tailwindcss/base';\n@import 'tailwindcss/components';\n\n.btn {\n\t@apply items-center bg-secondary border-0 py-1 px-3 focus:outline-none hover:bg-secondaryHover rounded-lg text-base mt-0;\n}\n.center {\n\t@apply absolute top-0 left-10;\n}\n.animate {\n\t@apply transition-all duration-200 ease-in-out;\n}\n\n.noice {\n\t@apply pb-2;\n\tbackground: linear-gradient(currentColor 0 0) left var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat,\n\t\tlinear-gradient(currentColor 0 0) right var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat;\n\ttransition: 0.3s, background-position 0.3s 0.3s;\n}\n\n.noice:hover {\n\t--d: 50%;\n\t--p: 50.1%;\n\ttransition: cubic-bezier(0, 500, 1, 500) 0.3s, background-size 0.3s 0.3s;\n}\n\n@import 'tailwindcss/utilities';\n\n@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:ital,wght@0,300;0,400;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;1,6..12,300;1,6..12,400&display=swap');\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1403,6 +1285,20 @@ module.exports = function (item) {
   }
   return [content].join("\n");
 };
+
+/***/ }),
+
+/***/ "./src/imgs/logo.png":
+/*!***************************!*\
+  !*** ./src/imgs/logo.png ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "images/logo.png");
 
 /***/ }),
 
@@ -1778,6 +1674,18 @@ module.exports = styleTagTransform;
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -1792,6 +1700,29 @@ module.exports = styleTagTransform;
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && (!scriptUrl || !/^http(s?):/.test(scriptUrl))) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */
@@ -1819,6 +1750,7 @@ const parentElement = document.body;
 parentElement.appendChild((0,_nav__WEBPACK_IMPORTED_MODULE_2__["default"])());
 let darkModeToggle = (0,_utilis__WEBPACK_IMPORTED_MODULE_1__.getElement)('#toggle');
 darkModeToggle.addEventListener('click', _darkMode__WEBPACK_IMPORTED_MODULE_3__["default"]);
+let x;
 })();
 
 /******/ })()
