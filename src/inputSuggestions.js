@@ -15,25 +15,26 @@ export default async function handleInput(input) {
 		suggestions.forEach((suggestion) => {
 			const div = createElement({
 				type: 'div',
-				classes: 'cursor-pointer hover:bg-gray-200 rounded-md mt-2',
+				classes:
+					'mt-1 hover:bg-slate-400 cursor-pointer w-full text-center rounded-md',
 				content: `${suggestion.name}`,
 			});
 			// Add event listener for each suggestion received from API.
 			div.addEventListener('click', () => {
-				handleSuggestion(input, div);
+				handleSuggestion(input);
 			});
 			suggestionParent.appendChild(div);
 		});
 	}
 }
 
-function handleSuggestion(input, div) {
-	input.value = div.textContent; // Set the input value to the clicked suggestion
+function handleSuggestion(input) {
 	processWeatherData(input.value); // Call the processWeatherData to get information
+	input.value = 'Searching...'; // Set the input value to the clicked suggestion
 	suggestionParent.innerHTML = ''; // Clear the suggestions
 	setTimeout(() => {
 		input.value = ''; // Clear input value
-	}, 300);
+	}, 500);
 }
 
 async function getAutocompleteSuggestions(query) {
