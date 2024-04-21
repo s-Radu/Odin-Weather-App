@@ -6,14 +6,17 @@ import nav from './nav';
 import './style.css';
 import { getElement } from './utilis';
 
-// **** Variables ****
+// **** selecting the body so we can append elements ****
 
-const location = getElement('#location');
 const parentElement = document.body;
 
 // **** Add elements to page ****
 
 parentElement.appendChild(nav());
+
+// **** variables that need to be after appending the elements to the page ***
+
+const location = getElement('#location');
 
 // **** Event listeners ****
 
