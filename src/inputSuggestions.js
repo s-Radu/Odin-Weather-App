@@ -1,7 +1,11 @@
 import processWeatherData from './getData';
 import { createElement, getElement } from './utilis';
 
-const suggestionParent = getElement('#suggestions');
+let suggestionParent;
+
+window.addEventListener('DOMContentLoaded', () => {
+	suggestionParent = getElement('#suggestions');
+});
 
 export default async function handleInput(input) {
 	const query = input.value; // Get input value.
