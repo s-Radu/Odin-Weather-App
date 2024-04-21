@@ -45,14 +45,19 @@
 		<!--! add title later-->
 	</head>
 
-	<body class="dark:bg-secondary">
-		<!-- <header class="text-primary container mx-auto in-h-10">
+	<body class="dark:bg-secondary font-josefin">
+		<header class="text-primary container mx-auto in-h-10">
 			<div
 				class="container mx-auto flex flex-wrap p-5 items-center justify-between">
 				<div class="relative flex w-20 h-10">
 					<a href="#">
 						<img src="${logo}" alt="Icon" class="w-20 absolute" />
 					</a>
+				</div>
+				<div>
+					<input type="text" id="location" class="rounded-md indent-2" />
+					<!--* figure out classes so it looks good and it does not interfeere witht he header -->
+					<div id="suggestions" class=""></div>
 				</div>
 
 				<div
@@ -68,10 +73,6 @@
 					</span>
 				</div>
 			</div>
-		</header> -->
-
-		<label for="location">Location?</label>
-		<input type="text" id="location" />
-		<div id="suggestions"></div>
+		</header>
 	</body>
 </html>

@@ -1,8 +1,9 @@
+import processWeatherData from './getData';
 import { createElement, getElement } from './utilis';
 
 const suggestionParent = getElement('#suggestions');
 
-export default async function (input) {
+export default async function handleInput(input) {
 	const query = input.value; // Get input value.
 	suggestionParent.innerHTML = ''; // Clear the previous suggestions.
 
@@ -28,7 +29,11 @@ export default async function (input) {
 
 function handleSuggestion(input, div) {
 	input.value = div.textContent; // Set the input value to the clicked suggestion
+	processWeatherData(input.value); // Call the processWeatherData to get information
 	suggestionParent.innerHTML = ''; // Clear the suggestions
+	setTimeout(() => {
+		input.value = ''; // Clear input value
+	}, 300);
 }
 
 async function getAutocompleteSuggestions(query) {
