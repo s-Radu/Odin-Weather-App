@@ -2,6 +2,7 @@
 import toggleDarkMode from './darkMode';
 import processWeatherData from './getData';
 import handleInput from './inputSuggestions';
+import main from './main';
 import nav from './nav';
 import './style.css';
 import { getElement } from './utilis';
@@ -12,7 +13,10 @@ const parentElement = document.body;
 
 // **** Add elements to page ****
 
-parentElement.appendChild(nav());
+const elements = [nav(), main()];
+elements.forEach((element) => {
+	parentElement.appendChild(element);
+});
 
 // **** variables that need to be after appending the elements to the page ***
 
