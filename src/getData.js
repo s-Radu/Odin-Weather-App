@@ -50,6 +50,12 @@ function extractWeatherData(data) {
 		chancesOfRaid: day.day.daily_chance_of_rain,
 		condition: day.day.condition.text,
 		icon: day.day.condition.icon,
+		hourly: day.hour.map((hour) => ({
+			time: hour.time,
+			temp: hour.temp_c,
+			rainChances: hour.chance_of_rain,
+			icon: hour.condition.icon,
+		})),
 	}));
 
 	displayData(location, currentDay, forecast);
@@ -82,6 +88,7 @@ function displayData(location, currentDay, forecast) {
 					class="mr-4" />
 		`,
 	});
+
 	const today = createElement({
 		type: 'div',
 		classes:
@@ -103,6 +110,11 @@ function displayData(location, currentDay, forecast) {
 			<div id="forecast" class="row-span-2">${forecast}</div>
 		`,
 	});
-	main.appendChild(city);
-	main.appendChild(today);
+
+	const elements = [city, today];
+
+	elements.forEach((element) => {
+		main.appendChild(element);
+	});
+	console.log(forecast);
 }
