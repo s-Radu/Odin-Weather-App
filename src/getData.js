@@ -108,14 +108,52 @@ function displayData(location, currentDay, forecast) {
 					<p class="m-1 text-lg">Wind Direction: ${currentDay.windDirection}</p>
 					<p class="m-1 text-lg">Wind Speed: ${currentDay.windSpeed} kph</p>
 					</div>
-					<p class="self-start text-lg mt-6">Conditions ${currentDay.condition}</p>
+					<p class="self-start text-xl mt-6">Conditions ${currentDay.condition}</p>
 				</div>
 		`,
 	});
 
-	
+	const forecastDay = createElement({
+		type: 'div',
+		classes: 'row-span-2 flex flex-col',
+		content: `
+		<div class="flex flex-col justify-around">
+				<h1 class="text-center m-4 text-3xl">${forecast[0].dayOfWeek}</h1>
+			<div class="flex flex-col items-center md:flex-row justify-around">
+				<div>
+						<p class="m-1 text-lg">Sunrise: ${forecast[0].sunrise}</p>
+						<p class="m-1 text-lg">Sunset: ${forecast[0].sunset}</p>
+					</div>
+					<div>
+						<p class="m-1 text-lg">Min Temp: ${forecast[0].minTempC}°C</p>
+						<p class="m-1 text-lg">Max Temp: ${forecast[0].maxTempC}°C</p>
+						<p class="m-1 text-lg">Avg Humidity: ${forecast[0].avgHumidity}</p>
+						<p class="m-1 text-lg">UV: ${forecast[0].uv}</p>
+					</div>
+					<div>
+						<p class="m-1 text-lg">Avg Visibility: ${forecast[0].avgVisibilityKm} km</p>
+						<p class="m-1 text-lg">Chances of Rain: ${forecast[0].chancesOfRain}</p>
+						<p class="m-1 text-lg">Conditions: ${forecast[0].condition}</p>
+					</div>
+				</div>
+				<img
+					src="${forecast[0].icon}"
+					alt=""
+					class="self-center m-4" />
+			</div>
+			<div class="overflow-scroll flex">
+				<div class="flex flex-col items-center min-w-44">
+					<h1 class="text-xl">00:00</h1>
+					<img src="//cdn.weatherapi.com/weather/64x64/day/116.png" alt="" />
+					<p class="m-1">Temp: 4°C</p>
+					<p class="m-1">Chance of Rain: 100%</p>
+				</div>
+			</div>
+		</div>
+		`,
+	});
 
-	const elements = [city, today];
+	const elements = [city, today, forecastDay];
 
 	elements.forEach((element) => {
 		main.appendChild(element);
