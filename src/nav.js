@@ -40,5 +40,3 @@ export default function nav() {
 
 	return header;
 }
-
-//  Import this file into index to make it work
