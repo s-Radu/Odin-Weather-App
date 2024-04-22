@@ -84,7 +84,8 @@ function displayData(location, currentDay, forecast) {
 	});
 	const today = createElement({
 		type: 'div',
-		classes: 'row-span-2 flex flex-wrap justify-around items-center',
+		classes:
+			'row-span-2 flex flex-wrap justify-around items-center container mx-auto md:max-w-md',
 		content: `
 		<div>
 					<p class="m-1 text-lg">Temp: ${currentDay.tempC}°C</p>
