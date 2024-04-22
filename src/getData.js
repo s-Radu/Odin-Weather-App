@@ -52,7 +52,7 @@ function extractWeatherData(data) {
 		icon: day.day.condition.icon,
 	}));
 
-
+	displayData(location, currentDay, forecast);
 }
 
 export default async function processWeatherData(city) {
@@ -67,4 +67,41 @@ export default async function processWeatherData(city) {
 	} catch (err) {
 		console.log(err);
 	}
+}
+
+function displayData(location, currentDay, forecast) {
+	const city = createElement({
+		type: 'div',
+		classes: 'flex flex-col items-center mt-4',
+		content: `
+		<h1 class="text-3xl">${location.city}</h1>
+				<h3 class="mt-2 ml-16">${location.country}</h3>
+				<img
+					src="${currentDay.icon}"
+					alt=""
+					class="mr-4" />
+		`,
+	});
+	const today = createElement({
+		type: 'div',
+		classes: 'row-span-2 flex flex-wrap justify-around items-center',
+		content: `
+		<div>
+					<p class="m-1 text-lg">Temp: ${currentDay.tempC}°C</p>
+					<p class="m-1 text-lg">Feels Like: ${currentDay.feelsLikeC}°C</p>
+					<p class="m-1 text-lg">Humidity: ${currentDay.humidity}%</p>
+				</div>
+				<div>
+					<p class="m-1 text-lg">UV: ${currentDay.uv}</p>
+					<p class="m-1 text-lg">Wind Direction: ${currentDay.windDirection}</p>
+					<p class="m-1 text-lg">Wind Speed: ${currentDay.windSpeed} kph</p>
+				</div>
+				<p class="self-start text-lg">And it's currently ${currentDay.condition}</p>
+			</div>
+
+			<div id="forecast" class="row-span-2">${forecast}</div>
+		`,
+	});
+	main.appendChild(city);
+	main.appendChild(today);
 }
