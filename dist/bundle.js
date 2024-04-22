@@ -40,6 +40,220 @@ window.onload = function () {
 
 /***/ }),
 
+/***/ "./src/getData.js":
+/*!************************!*\
+  !*** ./src/getData.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ processWeatherData)
+/* harmony export */ });
+/* harmony import */ var _utilis__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilis */ "./src/utilis.js");
+
+let main;
+window.addEventListener('DOMContentLoaded', () => {
+  main = (0,_utilis__WEBPACK_IMPORTED_MODULE_0__.getElement)('#main');
+});
+async function callWeatherAPI(city) {
+  // !Stop forgeting to use FETCH in order to fetch the data from the API!!!!!!!
+
+  try {
+    const response = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=025edeae7fbf45ad949194206241504&q=${city}&days=5&aqi=no&alerts=yes`, {
+      mode: 'cors'
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+function extractWeatherData(data) {
+  main.innerHTML = '';
+  const location = {
+    city: data.location.name,
+    country: data.location.country
+  };
+  const currentDay = {
+    tempC: data.current.temp_c,
+    feelsLikeC: data.current.feelslike_c,
+    humidity: data.current.humidity,
+    uv: data.current.uv,
+    windDirection: data.current.wind_dir,
+    windSpeed: data.current.wind_kph,
+    condition: data.current.condition.text,
+    icon: data.current.condition.icon
+  };
+  const forecast = data.forecast.forecastday.map(day => ({
+    date: day.date,
+    dayOfWeek: new Date(day.date).toLocaleDateString('en-US', {
+      weekday: 'long'
+    }),
+    sunrise: day.astro.sunrise,
+    sunset: day.astro.sunset,
+    minTempC: day.day.mintemp_c,
+    maxTempC: day.day.maxtemp_c,
+    avgHumidity: day.day.avghumidity,
+    uv: day.day.uv,
+    avgVisibilityKm: day.day.avgvis_km,
+    chancesOfRain: day.day.daily_chance_of_rain,
+    condition: day.day.condition.text,
+    icon: day.day.condition.icon,
+    hourly: day.hour.map(hour => ({
+      time: hour.time,
+      temp: hour.temp_c,
+      rainChances: hour.chance_of_rain,
+      icon: hour.condition.icon
+    }))
+  }));
+  displayData(location, currentDay, forecast);
+}
+async function processWeatherData(city) {
+  try {
+    const data = await callWeatherAPI(city);
+    // The below console logs the data in a json format that's pretty easy to read, but at the moment, I need it in an array so I can choose what I want
+    // console.log(JSON.stringify(data, null, 2));
+    if (data) {
+      extractWeatherData(data);
+      console.log(data);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+function displayData(location, currentDay, forecast) {
+  const city = (0,_utilis__WEBPACK_IMPORTED_MODULE_0__.createElement)({
+    type: 'div',
+    classes: 'flex flex-col items-center mt-4',
+    content: `
+		<h1 class="text-3xl">${location.city}</h1>
+				<h3 class="mt-2 ml-16">${location.country}</h3>
+				<img
+					src="${currentDay.icon}"
+					alt=""
+					class="mr-4" />
+		`
+  });
+  const today = (0,_utilis__WEBPACK_IMPORTED_MODULE_0__.createElement)({
+    type: 'div',
+    classes: 'row-span-2 md:max-w-md container mx-auto',
+    content: `
+		<h1 class="text-3xl text-center m-8">Today</h1>
+				<div class="flex flex-wrap justify-around items-center">
+					<div>
+					<p class="m-1 text-lg">Temp: ${currentDay.tempC}°C</p>
+					<p class="m-1 text-lg">Feels Like: ${currentDay.feelsLikeC}°C</p>
+					<p class="m-1 text-lg">Humidity: ${currentDay.humidity}%</p>
+					</div>
+					<div>
+					<p class="m-1 text-lg">UV: ${currentDay.uv}</p>
+					<p class="m-1 text-lg">Wind Direction: ${currentDay.windDirection}</p>
+					<p class="m-1 text-lg">Wind Speed: ${currentDay.windSpeed} kph</p>
+					</div>
+					<p class="self-start text-lg mt-6">Conditions ${currentDay.condition}</p>
+				</div>
+		`
+  });
+  const elements = [city, today];
+  elements.forEach(element => {
+    main.appendChild(element);
+  });
+  console.log(forecast);
+}
+
+/***/ }),
+
+/***/ "./src/inputSuggestions.js":
+/*!*********************************!*\
+  !*** ./src/inputSuggestions.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ handleInput)
+/* harmony export */ });
+/* harmony import */ var _getData__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./getData */ "./src/getData.js");
+/* harmony import */ var _utilis__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utilis */ "./src/utilis.js");
+
+
+let suggestionParent;
+window.addEventListener('DOMContentLoaded', () => {
+  suggestionParent = (0,_utilis__WEBPACK_IMPORTED_MODULE_1__.getElement)('#suggestions');
+});
+async function handleInput(input) {
+  const query = input.value; // Get input value.
+  suggestionParent.innerHTML = ''; // Clear the previous suggestions.
+
+  // Only fetch suggestions if the input is not empty.
+  if (query) {
+    // await on API for autocomplete suggestions.
+    const suggestions = await getAutocompleteSuggestions(query);
+    // For each suggestion received from the API create a new div, add the suggestions received from API, add event listener and append it to the parent element.
+    suggestions.forEach(suggestion => {
+      const div = (0,_utilis__WEBPACK_IMPORTED_MODULE_1__.createElement)({
+        type: 'div',
+        classes: 'mt-1 hover:bg-slate-400 cursor-pointer w-full text-center rounded-md',
+        content: `${suggestion.name}`
+      });
+      // Add event listener for each suggestion received from API.
+      div.addEventListener('click', () => {
+        handleSuggestion(input);
+      });
+      suggestionParent.appendChild(div);
+    });
+  }
+}
+function handleSuggestion(input) {
+  (0,_getData__WEBPACK_IMPORTED_MODULE_0__["default"])(input.value); // Call the processWeatherData to get information
+  input.value = 'Searching...'; // Set the input value to the clicked suggestion
+  suggestionParent.innerHTML = ''; // Clear the suggestions
+  setTimeout(() => {
+    input.value = ''; // Clear input value
+  }, 500);
+}
+async function getAutocompleteSuggestions(query) {
+  try {
+    const response = await fetch(`http://api.weatherapi.com/v1/search.json?key=025edeae7fbf45ad949194206241504&q=${query}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+/***/ }),
+
+/***/ "./src/main.js":
+/*!*********************!*\
+  !*** ./src/main.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ main)
+/* harmony export */ });
+/* harmony import */ var _utilis_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilis.js */ "./src/utilis.js");
+
+function main() {
+  const main = (0,_utilis_js__WEBPACK_IMPORTED_MODULE_0__.createElement)({
+    type: 'main',
+    classes: 'min-h-96 dark:text-primary text-black container mx-auto grid grid-cols-1 grid-rows-5 mt-20',
+    id: 'main'
+  });
+  return main;
+}
+
+/***/ }),
+
 /***/ "./src/nav.js":
 /*!********************!*\
   !*** ./src/nav.js ***!
@@ -50,22 +264,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ nav)
 /* harmony export */ });
-/* harmony import */ var _utilis_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utilis.js */ "./src/utilis.js");
-/* harmony import */ var _imgs_logo_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./imgs/logo.png */ "./src/imgs/logo.png");
+/* harmony import */ var _imgs_logo_png__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./imgs/logo.png */ "./src/imgs/logo.png");
+/* harmony import */ var _utilis_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utilis.js */ "./src/utilis.js");
 
 
 function nav() {
-  const header = (0,_utilis_js__WEBPACK_IMPORTED_MODULE_0__.createElement)({
+  const header = (0,_utilis_js__WEBPACK_IMPORTED_MODULE_1__.createElement)({
     type: 'header',
-    classes: 'text-primary container mx-auto min-h-10',
+    classes: 'dark:text-primary text-black container mx-auto min-h-10',
     content: `
+		<div class="container mx-auto flex flex-wrap p-5 items-center justify-between relative">
+				<div class="relative flex w-20 h-10">
+					<a href="#">
+						<img src="${_imgs_logo_png__WEBPACK_IMPORTED_MODULE_0__["default"]}" alt="Icon" class="w-20 absolute" />
+					</a>
+				</div>
 
+				<div class="absolute left-2/4 top-7 -translate-x-2/4 max-w-36">
+					<input
+						type="text"
+						id="location"
+						class="rounded-md indent-2 outline-none bg-slate-700 text-white dark:bg-slate-100 dark:text-black" />
+					<div id="suggestions" class="flex flex-col">
+					</div>
+				</div>
+
+				<div
+					id="toggle"
+					class="w-12 h-6 flex items-center group relative bg-gray-800 dark:bg-gray-300 rounded-full p-1 cursor-pointer transform duration-200 ease-in-expo hover:scale-105">
+					<div
+						id="circle"
+						class="w-5 h-5 bg-gray-300 dark:bg-gray-800 rounded-full duration-500 translate-x-5 ease-in-expo"></div>
+					<span
+						class="absolute text-xs bg-gray-700 text-gray-100 dark:bg-gray-100 dark:text-gray-700 p-1 min-w-20 text-center rounded-lg opacity-0 group-hover:opacity-100 -bottom-16 -left-1/3 transition-all duration-200 ease-in-expo"
+						x-show="showTooltip">
+						Toggle dark mode
+					</span>
+				</div>
+			</div>
         `
   });
   return header;
 }
-
-//  Import this file into index to make it work
 
 /***/ }),
 
@@ -746,10 +986,6 @@ video {
 	transition: cubic-bezier(0, 500, 1, 500) 0.3s, background-size 0.3s 0.3s;
 }
 
-.fixed {
-  position: fixed;
-}
-
 .absolute {
   position: absolute;
 }
@@ -766,20 +1002,28 @@ video {
   left: -33.333333%;
 }
 
-.bottom-12 {
-  bottom: 3rem;
+.left-2\\/4 {
+  left: 50%;
 }
 
-.right-4 {
-  right: 1rem;
+.top-7 {
+  top: 1.75rem;
 }
 
-.top-20 {
-  top: 5rem;
+.row-span-2 {
+  grid-row: span 2 / span 2;
 }
 
-.z-10 {
-  z-index: 10;
+.m-1 {
+  margin: 0.25rem;
+}
+
+.m-4 {
+  margin: 1rem;
+}
+
+.m-8 {
+  margin: 2rem;
 }
 
 .mx-auto {
@@ -787,44 +1031,48 @@ video {
   margin-right: auto;
 }
 
-.mb-1 {
-  margin-bottom: 0.25rem;
+.mb-10 {
+  margin-bottom: 2.5rem;
 }
 
-.ml-1 {
-  margin-left: 0.25rem;
+.ml-16 {
+  margin-left: 4rem;
 }
 
-.mr-5 {
-  margin-right: 1.25rem;
+.mr-4 {
+  margin-right: 1rem;
 }
 
-.mt-5 {
-  margin-top: 1.25rem;
+.mt-1 {
+  margin-top: 0.25rem;
 }
 
-.block {
-  display: block;
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-20 {
+  margin-top: 5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
 }
 
 .flex {
   display: flex;
 }
 
-.hidden {
-  display: none;
-}
-
-.h-1 {
-  height: 0.25rem;
+.grid {
+  display: grid;
 }
 
 .h-10 {
   height: 2.5rem;
-}
-
-.h-4 {
-  height: 1rem;
 }
 
 .h-5 {
@@ -839,12 +1087,12 @@ video {
   min-height: 2.5rem;
 }
 
-.min-h-20 {
-  min-height: 5rem;
+.min-h-96 {
+  min-height: 24rem;
 }
 
-.w-10 {
-  width: 2.5rem;
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .w-12 {
@@ -855,28 +1103,30 @@ video {
   width: 5rem;
 }
 
-.w-4 {
-  width: 1rem;
-}
-
-.w-40 {
-  width: 10rem;
-}
-
 .w-5 {
   width: 1.25rem;
 }
 
-.w-8 {
-  width: 2rem;
+.w-full {
+  width: 100%;
 }
 
 .min-w-20 {
   min-width: 5rem;
 }
 
-.origin-center {
-  transform-origin: center;
+.min-w-44 {
+  min-width: 11rem;
+}
+
+.max-w-36 {
+  max-width: 9rem;
+}
+
+.-translate-x-2\\/4 {
+  --tw-translate-x: -50%;
+  transform: translate(-50%, var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .translate-x-5 {
@@ -889,38 +1139,16 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-@keyframes fadeIn {
-
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeOut {
-
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-.animate-fadeOut {
-  animation: fadeOut 0.5s ease-in-out;
-}
-
 .cursor-pointer {
   cursor: pointer;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-rows-5 {
+  grid-template-rows: repeat(5, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -935,26 +1163,24 @@ video {
   align-items: center;
 }
 
-.justify-center {
-  justify-content: center;
-}
-
 .justify-between {
   justify-content: space-between;
 }
 
-.space-y-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * (1 - 0));
-  margin-top: calc(0.5rem * (1 - var(--tw-space-y-reverse)));
-  margin-top: calc(0.5rem * calc(1 - 0));
-  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * 0);
-  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+.justify-around {
+  justify-content: space-around;
 }
 
-.rounded-3xl {
-  border-radius: 1.5rem;
+.self-start {
+  align-self: flex-start;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.overflow-scroll {
+  overflow: scroll;
 }
 
 .rounded-full {
@@ -963,6 +1189,10 @@ video {
 
 .rounded-lg {
   border-radius: 0.5rem;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
 }
 
 .bg-gray-300 {
@@ -983,24 +1213,14 @@ video {
   background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
 }
 
-.bg-primary {
+.bg-slate-700 {
   --tw-bg-opacity: 1;
-  background-color: rgba(235, 190, 125, 1);
-  background-color: rgba(235, 190, 125, var(--tw-bg-opacity));
-}
-
-.bg-secondary {
-  --tw-bg-opacity: 1;
-  background-color: rgba(79, 79, 79, 1);
-  background-color: rgba(79, 79, 79, var(--tw-bg-opacity));
+  background-color: rgba(51, 65, 85, 1);
+  background-color: rgba(51, 65, 85, var(--tw-bg-opacity));
 }
 
 .p-1 {
   padding: 0.25rem;
-}
-
-.p-2 {
-  padding: 0.5rem;
 }
 
 .p-5 {
@@ -1011,14 +1231,38 @@ video {
   text-align: center;
 }
 
-.text-base {
-  font-size: 1rem;
-  line-height: 1.5rem;
+.indent-2 {
+  text-indent: 0.5rem;
+}
+
+.font-josefin {
+  font-family: Josefin Sans, sans-serif;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 
 .text-gray-100 {
@@ -1027,26 +1271,14 @@ video {
   color: rgba(243, 244, 246, var(--tw-text-opacity));
 }
 
-.text-primary {
+.text-white {
   --tw-text-opacity: 1;
-  color: rgba(235, 190, 125, 1);
-  color: rgba(235, 190, 125, var(--tw-text-opacity));
+  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 
 .opacity-0 {
   opacity: 0;
-}
-
-.shadow-md {
-  --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-  box-shadow: 0 0 rgba(0,0,0,0), 0 0 rgba(0,0,0,0), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0,0,0,0)), var(--tw-ring-shadow, 0 0 rgba(0,0,0,0)), var(--tw-shadow);
-}
-
-.shadow-black {
-  --tw-shadow-color: #000;
-  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .outline-none {
@@ -1056,12 +1288,6 @@ video {
 
 .transition-all {
   transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.transition-transform {
-  transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -1078,10 +1304,6 @@ video {
   transition-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035);
 }
 
-.ease-in-out {
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .hover\\:scale-105:hover {
   --tw-scale-x: 1.05;
   --tw-scale-y: 1.05;
@@ -1089,21 +1311,10 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.hover\\:bg-primary:hover {
+.hover\\:bg-slate-400:hover {
   --tw-bg-opacity: 1;
-  background-color: rgba(235, 190, 125, 1);
-  background-color: rgba(235, 190, 125, var(--tw-bg-opacity));
-}
-
-.hover\\:text-secondary:hover {
-  --tw-text-opacity: 1;
-  color: rgba(79, 79, 79, 1);
-  color: rgba(79, 79, 79, var(--tw-text-opacity));
-}
-
-.focus\\:outline-none:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
+  background-color: rgba(148, 163, 184, 1);
+  background-color: rgba(148, 163, 184, var(--tw-bg-opacity));
 }
 
 .group:hover .group-hover\\:opacity-100 {
@@ -1134,35 +1345,37 @@ video {
   background-color: rgba(79, 79, 79, var(--tw-bg-opacity));
 }
 
+.dark .dark\\:bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgba(241, 245, 249, 1);
+  background-color: rgba(241, 245, 249, var(--tw-bg-opacity));
+}
+
+.dark .dark\\:text-black {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
+
 .dark .dark\\:text-gray-700 {
   --tw-text-opacity: 1;
   color: rgba(55, 65, 81, 1);
   color: rgba(55, 65, 81, var(--tw-text-opacity));
 }
 
+.dark .dark\\:text-primary {
+  --tw-text-opacity: 1;
+  color: rgba(235, 190, 125, 1);
+  color: rgba(235, 190, 125, var(--tw-text-opacity));
+}
+
 @media (min-width: 768px) {
 
-  .md\\:ml-auto {
-    margin-left: auto;
-  }
-
-  .md\\:flex {
-    display: flex;
-  }
-
-  .md\\:inline-flex {
-    display: inline-flex;
-  }
-
-  .md\\:hidden {
-    display: none;
-  }
-
-  .md\\:justify-normal {
-    justify-content: normal;
+  .md\\:max-w-md {
+    max-width: 28rem;
   }
 }
-`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"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","sourcesContent":["@import 'tailwindcss/base';\n@import 'tailwindcss/components';\n\n.btn {\n\t@apply items-center bg-secondary border-0 py-1 px-3 focus:outline-none hover:bg-secondaryHover rounded-lg text-base mt-0;\n}\n.center {\n\t@apply absolute top-0 left-10;\n}\n.animate {\n\t@apply transition-all duration-200 ease-in-out;\n}\n\n.noice {\n\t@apply pb-2;\n\tbackground: linear-gradient(currentColor 0 0) left var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat,\n\t\tlinear-gradient(currentColor 0 0) right var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat;\n\ttransition: 0.3s, background-position 0.3s 0.3s;\n}\n\n.noice:hover {\n\t--d: 50%;\n\t--p: 50.1%;\n\ttransition: cubic-bezier(0, 500, 1, 500) 0.3s, background-size 0.3s 0.3s;\n}\n\n@import 'tailwindcss/utilities';\n\n@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:ital,wght@0,300;0,400;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;1,6..12,300;1,6..12,400&display=swap');\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"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","sourcesContent":["@import 'tailwindcss/base';\n@import 'tailwindcss/components';\n\n.btn {\n\t@apply items-center bg-secondary border-0 py-1 px-3 focus:outline-none hover:bg-secondaryHover rounded-lg text-base mt-0;\n}\n.center {\n\t@apply absolute top-0 left-10;\n}\n.animate {\n\t@apply transition-all duration-200 ease-in-out;\n}\n\n.noice {\n\t@apply pb-2;\n\tbackground: linear-gradient(currentColor 0 0) left var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat,\n\t\tlinear-gradient(currentColor 0 0) right var(--p, 50%) bottom 0 /\n\t\t\tvar(--d, 10%) 3px no-repeat;\n\ttransition: 0.3s, background-position 0.3s 0.3s;\n}\n\n.noice:hover {\n\t--d: 50%;\n\t--p: 50.1%;\n\ttransition: cubic-bezier(0, 500, 1, 500) 0.3s, background-size 0.3s 0.3s;\n}\n\n@import 'tailwindcss/utilities';\n\n@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:ital,wght@0,300;0,400;1,300;1,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;1,6..12,300;1,6..12,400&display=swap');\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1738,19 +1951,54 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
-/* harmony import */ var _utilis__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utilis */ "./src/utilis.js");
-/* harmony import */ var _nav__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nav */ "./src/nav.js");
-/* harmony import */ var _darkMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./darkMode */ "./src/darkMode.js");
+/* harmony import */ var _darkMode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./darkMode */ "./src/darkMode.js");
+/* harmony import */ var _getData__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getData */ "./src/getData.js");
+/* harmony import */ var _inputSuggestions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./inputSuggestions */ "./src/inputSuggestions.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./main */ "./src/main.js");
+/* harmony import */ var _nav__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nav */ "./src/nav.js");
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+/* harmony import */ var _utilis__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utilis */ "./src/utilis.js");
+// **** Imports ****
 
 
 
+
+
+
+
+
+// **** selecting the body so we can append elements ****
 
 const parentElement = document.body;
-parentElement.appendChild((0,_nav__WEBPACK_IMPORTED_MODULE_2__["default"])());
-let darkModeToggle = (0,_utilis__WEBPACK_IMPORTED_MODULE_1__.getElement)('#toggle');
-darkModeToggle.addEventListener('click', _darkMode__WEBPACK_IMPORTED_MODULE_3__["default"]);
-let x;
+
+// **** Add elements to page ****
+
+const elements = [(0,_nav__WEBPACK_IMPORTED_MODULE_4__["default"])(), (0,_main__WEBPACK_IMPORTED_MODULE_3__["default"])()];
+elements.forEach(element => {
+  parentElement.appendChild(element);
+});
+
+// **** variables that need to be after appending the elements to the page ***
+
+const location = (0,_utilis__WEBPACK_IMPORTED_MODULE_6__.getElement)('#location');
+
+// **** Event listeners ****
+
+let darkModeToggle = (0,_utilis__WEBPACK_IMPORTED_MODULE_6__.getElement)('#toggle');
+darkModeToggle.addEventListener('click', _darkMode__WEBPACK_IMPORTED_MODULE_0__["default"]);
+location.addEventListener('keydown', getLocation);
+location.addEventListener('input', function () {
+  (0,_inputSuggestions__WEBPACK_IMPORTED_MODULE_2__["default"])(this);
+});
+
+// **** Functions ****
+
+function getLocation(e) {
+  if (e.key === 'Enter') {
+    (0,_getData__WEBPACK_IMPORTED_MODULE_1__["default"])(location.value);
+    location.value = '';
+  }
+}
 })();
 
 /******/ })()
