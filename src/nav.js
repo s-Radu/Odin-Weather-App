@@ -4,7 +4,7 @@ import { createElement } from './utilis.js';
 export default function nav() {
 	const header = createElement({
 		type: 'header',
-		classes: 'text-primary container mx-auto min-h-10',
+		classes: 'dark:text-primary text-black container mx-auto min-h-10',
 		content: `
 		<div class="container mx-auto flex flex-wrap p-5 items-center justify-between relative">
 				<div class="relative flex w-20 h-10">
@@ -12,12 +12,12 @@ export default function nav() {
 						<img src="${logo}" alt="Icon" class="w-20 absolute" />
 					</a>
 				</div>
-				<div class="absolute left-2/4 top-7 -translate-x-2/4">
+
+				<div class="absolute left-2/4 top-7 -translate-x-2/4 max-w-36">
 					<input
 						type="text"
 						id="location"
-						class="rounded-md indent-2 text-black outline-none" />
-					<!--* figure out classes so it looks good and it does not interfeere witht he header -->
+						class="rounded-md indent-2 outline-none bg-slate-700 text-white dark:bg-slate-100 dark:text-black" />
 					<div id="suggestions" class="flex flex-col">
 					</div>
 				</div>
