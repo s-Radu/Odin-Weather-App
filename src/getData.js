@@ -40,6 +40,9 @@ function extractWeatherData(data) {
 
 	const forecast = data.forecast.forecastday.map((day) => ({
 		date: day.date,
+		dayOfWeek: new Date(day.date).toLocaleDateString('en-US', {
+			weekday: 'long',
+		}),
 		sunrise: day.astro.sunrise,
 		sunset: day.astro.sunset,
 		minTempC: day.day.mintemp_c,
@@ -47,7 +50,7 @@ function extractWeatherData(data) {
 		avgHumidity: day.day.avghumidity,
 		uv: day.day.uv,
 		avgVisibilityKm: day.day.avgvis_km,
-		chancesOfRaid: day.day.daily_chance_of_rain,
+		chancesOfRain: day.day.daily_chance_of_rain,
 		condition: day.day.condition.text,
 		icon: day.day.condition.icon,
 		hourly: day.hour.map((hour) => ({
@@ -91,25 +94,26 @@ function displayData(location, currentDay, forecast) {
 
 	const today = createElement({
 		type: 'div',
-		classes:
-			'row-span-2 flex flex-wrap justify-around items-center container mx-auto md:max-w-md',
+		classes: 'row-span-2 md:max-w-md container mx-auto',
 		content: `
-		<div>
+		<h1 class="text-3xl text-center m-8">Today</h1>
+				<div class="flex flex-wrap justify-around items-center">
+					<div>
 					<p class="m-1 text-lg">Temp: ${currentDay.tempC}°C</p>
 					<p class="m-1 text-lg">Feels Like: ${currentDay.feelsLikeC}°C</p>
 					<p class="m-1 text-lg">Humidity: ${currentDay.humidity}%</p>
-				</div>
-				<div>
+					</div>
+					<div>
 					<p class="m-1 text-lg">UV: ${currentDay.uv}</p>
 					<p class="m-1 text-lg">Wind Direction: ${currentDay.windDirection}</p>
 					<p class="m-1 text-lg">Wind Speed: ${currentDay.windSpeed} kph</p>
+					</div>
+					<p class="self-start text-lg mt-6">Conditions ${currentDay.condition}</p>
 				</div>
-				<p class="self-start text-lg">And it's currently ${currentDay.condition}</p>
-			</div>
-
-			<div id="forecast" class="row-span-2">${forecast}</div>
 		`,
 	});
+
+	
 
 	const elements = [city, today];
 
