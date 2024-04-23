@@ -4,7 +4,7 @@ export default function main() {
 	const main = createElement({
 		type: 'main',
 		classes:
-			'min-h-screen dark:text-primary text-black container mx-auto grid grid-cols-1 grid-rows-12 mt-20',
+			'min-h-[80vh] dark:text-primary text-black container mx-auto grid grid-cols-1 grid-rows-12 mt-20',
 		id: 'main',
 	});
 	return main;

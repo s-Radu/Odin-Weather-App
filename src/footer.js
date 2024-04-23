@@ -3,7 +3,7 @@ import { createElement } from './utilis';
 export default function footer() {
 	return createElement({
 		type: 'footer',
-		classes: 'flex items-center dark:text-primary justify-center mt-8',
+		classes: 'flex items-center dark:text-primary justify-center min-h-14',
 		content: `
         <p class="mr-4">Built by lilVoid</p>
 			<a href="https://github.com/s-Radu">
