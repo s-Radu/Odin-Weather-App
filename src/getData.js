@@ -81,7 +81,7 @@ export default async function processWeatherData(city) {
 function displayData(location, currentDay, forecast) {
 	const city = createElement({
 		type: 'div',
-		classes: 'flex flex-col items-center mt-4',
+		classes: 'flex flex-col items-center mt-4 row-span-1',
 		content: `
 		<h1 class="text-3xl">${location.city}</h1>
 				<h3 class="mt-2 ml-16">${location.country}</h3>
@@ -94,10 +94,10 @@ function displayData(location, currentDay, forecast) {
 
 	const today = createElement({
 		type: 'div',
-		classes: 'row-span-1 md:max-w-md container mx-auto',
+		classes: 'row-span-1 md:max-w-md container mx-auto m-4',
 		content: `
 		<h1 class="text-3xl text-center m-8">Today</h1>
-				<div class="flex flex-wrap justify-around items-center">
+				<div class="flex flex-wrap justify-around items-center m-4">
 					<div>
 					<p class="m-1 text-lg">Temp: ${currentDay.tempC}°C</p>
 					<p class="m-1 text-lg">Feels Like: ${currentDay.feelsLikeC}°C</p>
@@ -113,8 +113,24 @@ function displayData(location, currentDay, forecast) {
 		`,
 	});
 
-	const forecastDays = forecast.map((day) =>
-		createElement({
+	const forecastDays = forecast.map((day) => {
+		// Generate the HTML for the hourly forecast
+		const hourlyHtml = day.hourly
+			.map((hour) => {
+				const timeOnly = hour.time.split(' ')[1];
+				return `
+			  <div class="flex flex-col items-center min-w-44">
+				<h1 class="text-xl">${timeOnly}</h1>
+				<img src="${hour.icon}" alt="" />
+				<p class="m-1">Temp: ${hour.temp}°C</p>
+				<p class="m-1">Chance of Rain: ${hour.rainChances}%</p>
+			  </div>
+			`;
+			})
+			.join('');
+
+		// Create the element for the day's forecast
+		return createElement({
 			type: 'div',
 			classes: 'row-span-2 flex flex-col',
 			content: `<div class="flex flex-col justify-around">
@@ -142,56 +158,11 @@ function displayData(location, currentDay, forecast) {
 			class="self-center m-4" />
 	</div>
 	<div class="overflow-scroll flex">
-		<div class="flex flex-col items-center min-w-44">
-			<h1 class="text-xl">00:00</h1>
-			<img src="//cdn.weatherapi.com/weather/64x64/day/116.png" alt="" />
-			<p class="m-1">Temp: 4°C</p>
-			<p class="m-1">Chance of Rain: 100%</p>
-		</div>
+			${hourlyHtml}
 	</div>
 </div>`,
-		}),
-	);
-
-	// const forecastDay = createElement({
-	// 	type: 'div',
-	// 	classes: 'row-span-2 flex flex-col',
-	// 	content: `
-	// 	<div class="flex flex-col justify-around">
-	// 			<h1 class="text-center m-4 text-3xl">${forecast[0].dayOfWeek}</h1>
-	// 		<div class="flex flex-col items-center md:flex-row justify-around">
-	// 			<div>
-	// 					<p class="m-1 text-lg">Sunrise: ${forecast[0].sunrise}</p>
-	// 					<p class="m-1 text-lg">Sunset: ${forecast[0].sunset}</p>
-	// 				</div>
-	// 				<div>
-	// 					<p class="m-1 text-lg">Min Temp: ${forecast[0].minTempC}°C</p>
-	// 					<p class="m-1 text-lg">Max Temp: ${forecast[0].maxTempC}°C</p>
-	// 					<p class="m-1 text-lg">Avg Humidity: ${forecast[0].avgHumidity}</p>
-	// 					<p class="m-1 text-lg">UV: ${forecast[0].uv}</p>
-	// 				</div>
-	// 				<div>
-	// 					<p class="m-1 text-lg">Avg Visibility: ${forecast[0].avgVisibilityKm} km</p>
-	// 					<p class="m-1 text-lg">Chances of Rain: ${forecast[0].chancesOfRain}</p>
-	// 					<p class="m-1 text-lg">Conditions: ${forecast[0].condition}</p>
-	// 				</div>
-	// 			</div>
-	// 			<img
-	// 				src="${forecast[0].icon}"
-	// 				alt=""
-	// 				class="self-center m-4" />
-	// 		</div>
-	// 		<div class="overflow-scroll flex">
-	// 			<div class="flex flex-col items-center min-w-44">
-	// 				<h1 class="text-xl">00:00</h1>
-	// 				<img src="//cdn.weatherapi.com/weather/64x64/day/116.png" alt="" />
-	// 				<p class="m-1">Temp: 4°C</p>
-	// 				<p class="m-1">Chance of Rain: 100%</p>
-	// 			</div>
-	// 		</div>
-	// 	</div>
-	// 	`,
-	// });
+		});
+	});
 
 	const elements = [city, today, ...forecastDays];
 
