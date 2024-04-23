@@ -1,5 +1,6 @@
 // **** Imports ****
 import toggleDarkMode from './darkMode';
+import footer from './footer';
 import processWeatherData from './getData';
 import handleInput from './inputSuggestions';
 import main from './main';
@@ -13,7 +14,7 @@ const parentElement = document.body;
 
 // **** Add elements to page ****
 
-const elements = [nav(), main()];
+const elements = [nav(), main(), footer()];
 elements.forEach((element) => {
 	parentElement.appendChild(element);
 });

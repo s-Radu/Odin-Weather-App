@@ -44,7 +44,7 @@ function handleSuggestion(input) {
 async function getAutocompleteSuggestions(query) {
 	try {
 		const response = await fetch(
-			`http://api.weatherapi.com/v1/search.json?key=025edeae7fbf45ad949194206241504&q=${query}`,
+			`https://api.weatherapi.com/v1/search.json?key=025edeae7fbf45ad949194206241504&q=${query}`,
 		);
 		if (!response.ok) {
 			throw new Error(`HTTP error! status: ${response.status}`);

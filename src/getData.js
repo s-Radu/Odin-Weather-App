@@ -10,7 +10,7 @@ async function callWeatherAPI(city) {
 
 	try {
 		const response = await fetch(
-			`http://api.weatherapi.com/v1/forecast.json?key=025edeae7fbf45ad949194206241504&q=${city}&days=5&aqi=no&alerts=yes`,
+			`https://api.weatherapi.com/v1/forecast.json?key=025edeae7fbf45ad949194206241504&q=${city}&days=5&aqi=no&alerts=yes`,
 			{ mode: 'cors' },
 		);
 		if (!response.ok) {
