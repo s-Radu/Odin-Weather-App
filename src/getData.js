@@ -1,3 +1,6 @@
+import cloudy from './imgs/cloudy.jpg';
+import rainy from './imgs/rain.jpg';
+import sunny from './imgs/sunny.jpg';
 import { createElement, getElement } from './utilis';
 let main;
 
@@ -62,6 +65,7 @@ function extractWeatherData(data) {
 	}));
 
 	displayData(location, currentDay, forecast);
+	changeBackground(currentDay.condition);
 }
 
 export default async function processWeatherData(city) {
@@ -171,4 +175,17 @@ function displayData(location, currentDay, forecast) {
 	});
 
 	console.log(forecast);
+}
+
+function changeBackground(condition) {
+	const parentElement = document.body;
+	if (condition === 'Sunny') {
+		parentElement.style.backgroundImage = `url(${sunny})`;
+	} else if (condition.toLowerCase().includes('rain')) {
+		parentElement.style.backgroundImage = `url(${rainy})`;
+	} else if (condition.toLowerCase().includes('cloud')) {
+		parentElement.style.backgroundImage = `url(${cloudy})`;
+	} else {
+		parentElement.style.backgroundImage = `url('')`;
+	}
 }
